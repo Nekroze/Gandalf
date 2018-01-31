@@ -1,6 +1,7 @@
 # Gandalf
 
 [![Build Status](https://travis-ci.org/JumboInteractiveLimited/Gandalf.svg?branch=master)](https://travis-ci.org/JumboInteractiveLimited/Gandalf)
+[![GitPitch](https://gitpitch.com/assets/badge.svg)](https://gitpitch.com/JumboInteractiveLimited/Gandalf/master)
 
 ![mascot](gandalf-gopher.png)
 
