@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/JumboInteractiveLimited/Gandalf/check"
+	"github.com/Nekroze/Gandalf/check"
 	"github.com/tidwall/gjson"
 )
 

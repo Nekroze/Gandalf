@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/JumboInteractiveLimited/Gandalf/check"
+	"github.com/Nekroze/Gandalf/check"
 )
 
 // An Extractor is any func that takes two strings and returns a slice of strings and an error.

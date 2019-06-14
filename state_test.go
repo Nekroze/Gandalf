@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/JumboInteractiveLimited/Gandalf/pathing"
+	"github.com/Nekroze/Gandalf/pathing"
 )
 
 func TestToState(t *testing.T) {

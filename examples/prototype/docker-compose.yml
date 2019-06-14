@@ -4,10 +4,10 @@ services:
   gandalf:
     build: ../../
     volumes:
-      - ../../:/go/src/github.com/JumboInteractiveLimited/Gandalf
+      - ../../:/go/src/github.com/Nekroze/Gandalf
       - mmock:/mmock
-    working_dir: /go/src/github.com/JumboInteractiveLimited/Gandalf/examples/prototype
-    command: go test -v -bench . -benchmem -gandalf.colour -gandalf.mock-dest http://mock:8082 -gandalf.provider-host mock:8080 github.com/JumboInteractiveLimited/Gandalf/examples/prototype
+    working_dir: /go/src/github.com/Nekroze/Gandalf/examples/prototype
+    command: go test -v -bench . -benchmem -gandalf.colour -gandalf.mock-dest http://mock:8082 -gandalf.provider-host mock:8080 github.com/Nekroze/Gandalf/examples/prototype
 
   mock:
     image: jordimartin/mmock

@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/JumboInteractiveLimited/Gandalf"
-	c "github.com/JumboInteractiveLimited/Gandalf/check"
+	. "github.com/Nekroze/Gandalf"
+	c "github.com/Nekroze/Gandalf/check"
 )
 
 func statelessContracts() []*Contract {

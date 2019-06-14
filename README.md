@@ -1,6 +1,6 @@
 # Gandalf
 
-[![Build Status](https://travis-ci.org/JumboInteractiveLimited/Gandalf.svg?branch=master)](https://travis-ci.org/JumboInteractiveLimited/Gandalf)
+[![Build Status](https://travis-ci.org/Nekroze/Gandalf.svg?branch=master)](https://travis-ci.org/Nekroze/Gandalf)
 
 ![mascot](gandalf-gopher.png)
 
@@ -11,5 +11,5 @@ At the highest level Gandalf is a tool for contract testing a web API.
 
 # Docs
 
-https://godoc.org/github.com/JumboInteractiveLimited/Gandalf
+https://godoc.org/github.com/Nekroze/Gandalf
 

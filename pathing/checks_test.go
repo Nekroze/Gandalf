@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/JumboInteractiveLimited/Gandalf/check"
+	"github.com/Nekroze/Gandalf/check"
 )
 
 func compareStringSlices(a, b []string) error {

@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/JumboInteractiveLimited/Gandalf/check"
-	"github.com/JumboInteractiveLimited/jsonpath"
+	"github.com/Nekroze/Gandalf/check"
+	"github.com/Nekroze/jsonpath"
 )
 
 // JSON meets the Extractor type for extracting JSON data with JSONPath. This
-// extractor uses http://github.com/JumboInteractiveLimited/jsonpath which describes the
+// extractor uses http://github.com/Nekroze/jsonpath which describes the
 // supported jsonpath expressions/paths/addresses that you may use.
 // Produces an error when a value cannot be extract for non wildcard paths.
 func JSON(source, path string) (found []string, err error) {

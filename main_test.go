@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	c "github.com/JumboInteractiveLimited/Gandalf/check"
-	p "github.com/JumboInteractiveLimited/Gandalf/pathing"
+	c "github.com/Nekroze/Gandalf/check"
+	p "github.com/Nekroze/Gandalf/pathing"
 )
 
 // So you are building a web API, it will change the world, you decide your server needs to

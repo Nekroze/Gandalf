@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/JumboInteractiveLimited/Gandalf/check"
+	"github.com/Nekroze/Gandalf/check"
 )
 
 func ExampleSimpleChecker() {

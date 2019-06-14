@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/JumboInteractiveLimited/Gandalf/check"
+	"github.com/Nekroze/Gandalf/check"
 )
 
 // SimpleChecker implements a Checker that asserts the expected HTTP status

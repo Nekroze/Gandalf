@@ -1,9 +1,9 @@
 FROM golang:1.11-stretch
 ENV GO111MODULE=on
-WORKDIR /go/src/github.com/JumboInteractiveLimited/Gandalf
+WORKDIR /go/src/github.com/Nekroze/Gandalf
 COPY go.* ./
 RUN echo "Pulling go dependencies" \
 	&& go mod download
 COPY . .
 RUN echo "Testing gandalf" \
-	&& go test -v -cover -short github.com/JumboInteractiveLimited/Gandalf/...
+	&& go test -v -cover -short github.com/Nekroze/Gandalf/...
