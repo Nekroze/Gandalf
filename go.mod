@@ -1,4 +1,4 @@
-module github.com/JumboInteractiveLimited/Gandalf
+module github.com/Nekroze/Gandalf
 
 go 1.11
 
