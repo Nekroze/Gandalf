@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/JumboInteractiveLimited/jsonpath"
 	"github.com/Nekroze/Gandalf/check"
-	"github.com/Nekroze/jsonpath"
 )
 
 // JSON meets the Extractor type for extracting JSON data with JSONPath. This
