@@ -1,9 +1,10 @@
 package gandalf
 
 import (
-	"flag"
 	"net/http"
 	"strings"
+
+	"github.com/namsral/flag"
 )
 
 // OverrideColour will force coloured cli output regardless of being a TTY or

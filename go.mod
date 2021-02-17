@@ -9,6 +9,7 @@ require (
 	github.com/fatih/color v1.7.0
 	github.com/jmartin82/mmock v2.5.0+incompatible
 	github.com/mattn/go-colorable v0.1.2 // indirect
+	github.com/namsral/flag v1.7.4-pre
 	github.com/radovskyb/watcher v1.0.6 // indirect
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/tidwall/gjson v1.2.1
