@@ -8,72 +8,77 @@ import (
 )
 
 // OverrideColour will force coloured cli output regardless of being a TTY or
-// not. This can be set using the `-gandalf.colour` switch.
+// not. This can be set using the `-gandalf-colour` switch or `GANDALF_COLOUR`
+// environment variable.
 var OverrideColour bool
 
 // OverrideHost rewrites the target provider api to be targeted when making
 // real outbound via requesters that are correctly written to use this such as
 // SimpleRequester. can be overridden globally with the
-// `-gandalf.provider-host` cli switch.
+// `-gandalf-provider-host` cli switch or `GANDALF_PROVIDER_HOST` environment variable.
 var OverrideHost string
 
 // OverrideHostSuffix rewrites the target provider hostname.  This can be
 // useful if your contracts reference different hosts for various services,
 // then setting OverrideHostSuffix to your dev instances domain to retarget at
-// runtime.  This can be done using the `-gandalf.provider-suffix` cli switch.
+// runtime.  This can be done using the `-gandalf-provider-suffix` cli switch
+// or `GANDALF_PROVIDER_SUFFIX` environment variable.
 var OverrideHostSuffix string
 
 // OverrideWebroot gets prepended to all requests URI's. This can be useful
 // when targeting an environment that uses webroot routing to the service to be
-// tested. This can be done using the `-gandalf.provider-webroot` cli switch.
+// tested. This can be done using the `-gandalf-provider-webroot` cli switch or
+// `GANDALF_PROVIDER_WEBROOT` environment variable.
 var OverrideWebroot string
 
 // OverrideHTTPS if true will make all external requests use HTTPS. This may be
 // required when targeting a production environment. This can be done using the
-// `-gandalf.provider-https` cli switch.
+// `-gandalf-provider-https` cli switch or `GANDALF_PROVIDER_HTTPS` environment variable.
 var OverrideHTTPS bool
 
 // OverrideChaos enables MMock definitions support chaos testing with random
 // 5xx responses by setting the ChaoticEvil switch in ToMMock exporters. You
-// can also override this in all definitions with the `-gandalf.mmock-chaos`
-// cli switch.
+// can also override this in all definitions with the `-gandalf-mmock-chaos`
+// cli switch or `GANDALF_MMOCK_CHAOS` environment variable.
 var OverrideChaos bool
 
 // MockSkip when set to true will not write mock definitions to disk. You can
-// also override this wth the `-gandalf.mmock-skip` cli switch.
+// also override this wth the `-gandalf-mmock-skip` cli switch or
+// `GANDALF_MMOCK_SKIP` environment variable.
 var MockSkip bool
 
 // MockDelay sets the sleep/timeout period after exporting a mock definition. set this
-// to the number of milliseconds or use the `-gandalf.mock-delay` cli switch.
+// to the number of milliseconds or use the `-gandalf-mock-delay` cli switch or
+// `GANDALF_MOCK_DELAY` environment variable.
 var MockDelay int
 
-// Gandalf can be configured with custom flags given
-// to the `go test` command or be setting the respective
+// Gandalf can be configured with custom flags given or `GANDALF_` prefixed
+// environment variable to the `go test` command or be setting the respective
 // global variables.
 //
 // MockSavePath tells exporters where to write generated mock should they have
-// that functionality, eg. for mmock ingestion.  use the `-gandalf.mock-dest`
-// cli switch to specify where
+// that functionality, eg. for mmock ingestion.  use the `-gandalf-mock-dest`
+// cli switch to specify where or `GANDALF_MOCK_DEST` environment variable.
 var MockSavePath string
 
 func init() {
-	flag.BoolVar(&OverrideChaos, "gandalf.mmock-chaos", false,
+	flag.BoolVar(&OverrideChaos, "gandalf-mmock-chaos", false,
 		"Force enable chaos testing in all output mmock definitions.")
-	flag.BoolVar(&OverrideHTTPS, "gandalf.provider-https", false,
+	flag.BoolVar(&OverrideHTTPS, "gandalf-provider-https", false,
 		"Force all requests to use HTTPS.")
-	flag.BoolVar(&MockSkip, "gandalf.mmock-skip", false,
+	flag.BoolVar(&MockSkip, "gandalf-mmock-skip", false,
 		"Skip exporting contract definitions to mmock.")
-	flag.BoolVar(&OverrideColour, "gandalf.colour", false,
+	flag.BoolVar(&OverrideColour, "gandalf-colour", false,
 		"Override tty detection and force colour output.")
-	flag.IntVar(&MockDelay, "gandalf.mock-delay", 250,
+	flag.IntVar(&MockDelay, "gandalf-mock-delay", 250,
 		"Override milliseconds to wait after exporting a mock definition.")
-	flag.StringVar(&MockSavePath, "gandalf.mock-dest", "./",
+	flag.StringVar(&MockSavePath, "gandalf-mock-dest", "./",
 		"Destination to use when saving mocks.")
-	flag.StringVar(&OverrideHost, "gandalf.provider-host", "",
+	flag.StringVar(&OverrideHost, "gandalf-provider-host", "",
 		"if set to a non empty string all http requests for calls will be rewritten to use this address as the hostname and optional port.")
-	flag.StringVar(&OverrideHostSuffix, "gandalf.provider-suffix", "",
+	flag.StringVar(&OverrideHostSuffix, "gandalf-provider-suffix", "",
 		"when provided, this will be appended to the hostname of any and all external requests.")
-	flag.StringVar(&OverrideWebroot, "gandalf.provider-webroot", "",
+	flag.StringVar(&OverrideWebroot, "gandalf-provider-webroot", "",
 		"when provided, this will be prepended to the request URI of any and all external requests.")
 	if !flag.Parsed() {
 		flag.Parse()
