@@ -9,7 +9,8 @@ services:
     working_dir: /go/src/github.com/Nekroze/Gandalf/examples/prototype
     environment:
       GANDALF_COLOUR: 'true'
-      GANDALF_MOCK_DEST: 'http://mock:8082'
+      #GANDALF_MOCK_DEST: 'http://mock:8082' # for testing mmock api client exporting
+      GANDALF_MOCK_DEST: '/mmock' # for testing mmock file exporting
       GANDALF_PROVIDER_HOST: 'mock:8080'
     command: go test -v -bench . -benchmem github.com/Nekroze/Gandalf/examples/prototype
 

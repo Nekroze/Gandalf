@@ -7,7 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jmartin82/mmock/definition"
+	"github.com/jmartin82/mmock/pkg/mock"
+	"github.com/stretchr/testify/assert"
 	"gopkg.in/h2non/gock.v1"
 )
 
@@ -96,15 +97,15 @@ func Test_clientMMock_constructURL(t *testing.T) {
 
 func Test_clientMMock_getDefinitions(t *testing.T) {
 	defer gock.Off()
-	mocks := []definition.Mock{
+	mocks := []mock.Definition{
 		{
 			URI:         "AAA",
 			Description: "BBB",
-			Request: definition.Request{
+			Request: mock.Request{
 				Method: "GET",
 				Path:   "/healthz",
 			},
-			Response: definition.Response{
+			Response: mock.Response{
 				StatusCode: 200,
 				Body:       "OK",
 			},
@@ -121,7 +122,7 @@ func Test_clientMMock_getDefinitions(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		wantOut []definition.Mock
+		wantOut []mock.Definition
 		wantErr bool
 	}{
 		{
@@ -145,23 +146,21 @@ func Test_clientMMock_getDefinitions(t *testing.T) {
 				t.Errorf("clientMMock.getDefinitions() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(gotOut, tt.wantOut) {
-				t.Errorf("clientMMock.getDefinitions() = %v, want %v", gotOut, tt.wantOut)
-			}
+			assert.Equal(t, tt.wantOut, gotOut)
 		})
 	}
 }
 
 func Test_clientMMock_sendDefinition(t *testing.T) {
 	defer gock.Off()
-	mock := definition.Mock{
+	mockDef := mock.Definition{
 		URI:         "AAA",
 		Description: "BBB",
-		Request: definition.Request{
+		Request: mock.Request{
 			Method: "GET",
 			Path:   "/healthz",
 		},
-		Response: definition.Response{
+		Response: mock.Response{
 			StatusCode: 200,
 			Body:       "OK",
 		},
@@ -169,12 +168,12 @@ func Test_clientMMock_sendDefinition(t *testing.T) {
 	gock.New("http://test:8082").
 		Post("/api/mapping/AAA").
 		MatchType("json").
-		JSON(mock).
+		JSON(mockDef).
 		Reply(http.StatusCreated)
 	gock.New("http://test:8082").
 		Put("/api/mapping/AAA").
 		MatchType("json").
-		JSON(mock).
+		JSON(mockDef).
 		Reply(http.StatusOK)
 	type fields struct {
 		base   *url.URL
@@ -182,7 +181,7 @@ func Test_clientMMock_sendDefinition(t *testing.T) {
 	}
 	type args struct {
 		method string
-		mock   definition.Mock
+		mock   mock.Definition
 	}
 	tests := []struct {
 		name    string
@@ -198,7 +197,7 @@ func Test_clientMMock_sendDefinition(t *testing.T) {
 			},
 			args: args{
 				method: "POST",
-				mock:   mock,
+				mock:   mockDef,
 			},
 			wantErr: false,
 		},
@@ -210,7 +209,7 @@ func Test_clientMMock_sendDefinition(t *testing.T) {
 			},
 			args: args{
 				method: "PUT",
-				mock:   mock,
+				mock:   mockDef,
 			},
 			wantErr: false,
 		},

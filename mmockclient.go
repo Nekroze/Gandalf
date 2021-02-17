@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/eapache/go-resiliency/retrier"
-	"github.com/jmartin82/mmock/definition"
+	"github.com/jmartin82/mmock/pkg/mock"
 )
 
 type clientMMock struct {
@@ -63,19 +63,19 @@ func (mmock *clientMMock) call(method, path, body string) (*http.Response, error
 	return mmock.client.Do(req)
 }
 
-func (mmock *clientMMock) getDefinitions() (out []definition.Mock, err error) {
+func (mmock *clientMMock) getDefinitions() (out []mock.Definition, err error) {
 	resp, err := mmock.call("GET", "/api/mapping", "")
 	if err != nil {
 		return nil, err
 	}
 	body, err := ioutil.ReadAll(resp.Body)
-	if err == nil {
-		err = json.Unmarshal(body, &out)
+	if err != nil {
+		return nil, err
 	}
-	return out, err
+	return out, json.Unmarshal(mmockFixTimespansForParsing(body), &out)
 }
 
-func (mmock *clientMMock) sendDefinition(method string, mock definition.Mock) error {
+func (mmock *clientMMock) sendDefinition(method string, mock mock.Definition) error {
 	muri := getMMockDefURI(mock)
 	bbody, err := json.Marshal(mock)
 	if err != nil {
@@ -109,7 +109,7 @@ func (mmock *clientMMock) getRetrier() *retrier.Retrier {
 	)
 }
 
-func (mmock *clientMMock) createDefinition(mock definition.Mock) error {
+func (mmock *clientMMock) createDefinition(mock mock.Definition) error {
 	return mmock.getRetrier().Run(
 		func() error {
 			return mmock.sendDefinition("POST", mock)
@@ -117,7 +117,7 @@ func (mmock *clientMMock) createDefinition(mock definition.Mock) error {
 	)
 }
 
-func (mmock *clientMMock) updateDefinition(mock definition.Mock) error {
+func (mmock *clientMMock) updateDefinition(mock mock.Definition) error {
 	return mmock.getRetrier().Run(
 		func() error {
 			return mmock.sendDefinition("PUT", mock)
@@ -125,7 +125,7 @@ func (mmock *clientMMock) updateDefinition(mock definition.Mock) error {
 	)
 }
 
-func (mmock *clientMMock) upsertDefinition(mock definition.Mock) error {
+func (mmock *clientMMock) upsertDefinition(mock mock.Definition) error {
 	all, err := mmock.getDefinitions()
 	if err != nil {
 		return err
@@ -144,7 +144,7 @@ func (mmock *clientMMock) upsertDefinition(mock definition.Mock) error {
 	return do(mock)
 }
 
-func getMMockDefURI(mock definition.Mock) string {
+func getMMockDefURI(mock mock.Definition) string {
 	uri := mock.URI
 	if uri == "" {
 		uri = mock.Description

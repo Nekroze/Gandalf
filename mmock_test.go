@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmartin82/mmock/definition"
+	"github.com/jmartin82/mmock/pkg/mock"
 )
 
 func ExampleToMMock() {
@@ -97,12 +97,12 @@ func TestMMockExporter(t *testing.T) {
 	}
 }
 
-func readMMockDefinition(path string) (mock definition.Mock, err error) {
+func readMMockDefinition(path string) (mock mock.Definition, err error) {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
 		return
 	}
-	return mock, json.Unmarshal(file, &mock)
+	return mock, json.Unmarshal(mmockFixTimespansForParsing(file), &mock)
 }
 
 func BenchmarkMMockContracts(b *testing.B) {

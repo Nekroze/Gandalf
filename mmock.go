@@ -5,9 +5,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path"
+	"strings"
 	"time"
 
-	"github.com/jmartin82/mmock/definition"
+	"github.com/jmartin82/mmock/pkg/mock"
 )
 
 // ToMMock exports Contract as MMock definitions to build a fake api endpoint
@@ -33,7 +34,7 @@ type ToMMock struct {
 	saved     bool
 }
 
-func headersToValues(h map[string][]string) definition.Values {
+func headersToValues(h map[string][]string) mock.Values {
 	return h
 }
 
@@ -45,8 +46,8 @@ func cookiesToMap(cs []*http.Cookie) map[string]string {
 	return out
 }
 
-func (m *ToMMock) translateRequest(req *http.Request) definition.Request {
-	out := definition.Request{
+func (m *ToMMock) translateRequest(req *http.Request) mock.Request {
+	out := mock.Request{
 		Path:   req.URL.Path,
 		Method: req.Method,
 	}
@@ -54,7 +55,7 @@ func (m *ToMMock) translateRequest(req *http.Request) definition.Request {
 		out.Path = m.Path
 	}
 	if m.MatchHeaders {
-		out.HttpHeaders = definition.HttpHeaders{
+		out.HttpHeaders = mock.HttpHeaders{
 			Headers: headersToValues(req.Header),
 			Cookies: cookiesToMap(req.Cookies()),
 		}
@@ -65,10 +66,10 @@ func (m *ToMMock) translateRequest(req *http.Request) definition.Request {
 	return out
 }
 
-func (m *ToMMock) translateResponse(resp *http.Response) definition.Response {
-	return definition.Response{
+func (m *ToMMock) translateResponse(resp *http.Response) mock.Response {
+	return mock.Response{
 		StatusCode: resp.StatusCode,
-		HttpHeaders: definition.HttpHeaders{
+		HttpHeaders: mock.HttpHeaders{
 			Headers: headersToValues(resp.Header),
 			Cookies: cookiesToMap(resp.Cookies()),
 		},
@@ -76,12 +77,12 @@ func (m *ToMMock) translateResponse(resp *http.Response) definition.Response {
 	}
 }
 
-func (m *ToMMock) translateMock() definition.Control {
-	out := definition.Control{
+func (m *ToMMock) translateMock() mock.Control {
+	out := mock.Control{
 		Crazy: OverrideChaos || m.ChaoticEvil,
 	}
 	if m.Scenario != "" {
-		out.Scenario = definition.Scenario{
+		out.Scenario = mock.Scenario{
 			Name: m.Scenario,
 		}
 		if len(m.TriggerStates) > 0 {
@@ -96,8 +97,8 @@ func (m *ToMMock) translateMock() definition.Control {
 
 // Uses Requester.GetRequest and Checker.GetResponse as a basis to build
 // an MMock definition.
-func (m *ToMMock) contractToMock(c *Contract) definition.Mock {
-	return definition.Mock{
+func (m *ToMMock) contractToMock(c *Contract) mock.Definition {
+	return mock.Definition{
 		URI:         c.Name + ".json",
 		Description: c.Name,
 		Request:     m.translateRequest(c.Request.GetRequest()),
@@ -106,7 +107,7 @@ func (m *ToMMock) contractToMock(c *Contract) definition.Mock {
 	}
 }
 
-func (m *ToMMock) saveMockToFile(mock definition.Mock) error {
+func (m *ToMMock) saveMockToFile(mock mock.Definition) error {
 	out, err := json.Marshal(mock)
 	if err != nil {
 		return err
@@ -120,7 +121,7 @@ func (m *ToMMock) saveMockToFile(mock definition.Mock) error {
 	return err
 }
 
-func (m *ToMMock) saveMockToAPI(mock definition.Mock) error {
+func (m *ToMMock) saveMockToAPI(mock mock.Definition) error {
 	api := getMMockClient()
 	if e := api.upsertDefinition(mock); e != nil {
 		return e
@@ -140,4 +141,8 @@ func (m *ToMMock) Save(c *Contract) error {
 		saver = m.saveMockToAPI
 	}
 	return saver(m.contractToMock(c))
+}
+
+func mmockFixTimespansForParsing(in []byte) []byte {
+	return []byte(strings.ReplaceAll(string(in), `{"Duration":0}`, `"0s"`))
 }
