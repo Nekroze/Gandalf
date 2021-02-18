@@ -7,6 +7,7 @@ build() {
 
 mmock() {
 	docker-compose up --remove-orphans -d mock
+	#docker-compose up mockgen
 }
 
 run() {
@@ -14,11 +15,18 @@ run() {
 }
 
 down() {
-	docker-compose down -v --remove-orphans
 	docker-compose rm -svf
+	docker-compose down --rmi local --volumes --remove-orphans
 }
 
 cleanup() {
+	exitcode=$?
+	if [ "$exitcode" -ne 0 ]; then
+		docker-compose logs mock
+		echo Press enter when you are ready to clean all artifacts
+		read -r
+	fi
+	find . -name '*.json' -delete || true
 	down
 	export COMPOSE_FILE=
 	export COMPOSE_PROJECT_NAME=

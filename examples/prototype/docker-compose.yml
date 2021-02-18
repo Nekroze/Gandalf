@@ -1,4 +1,4 @@
-version: "2.1"
+version: '2.1'
 
 services:
   gandalf:
@@ -9,16 +9,16 @@ services:
     working_dir: /go/src/github.com/Nekroze/Gandalf/examples/prototype
     environment:
       GANDALF_COLOUR: 'true'
-      #GANDALF_MOCK_DEST: 'http://mock:8082' # for testing mmock api client exporting
-      GANDALF_MOCK_DEST: '/mmock' # for testing mmock file exporting
-      GANDALF_PROVIDER_HOST: 'mock:8080'
+      GANDALF_MOCK_DEST: '/mmock'
+      GANDALF_PROVIDER_HOST: 'mock:8083'
     command: go test -v -bench . -benchmem github.com/Nekroze/Gandalf/examples/prototype
 
   mock:
     image: jordimartin/mmock
-    command: -server-port 8080
     volumes:
       - mmock:/config
+    ports:
+      - 8082:8082
 
 volumes:
   mmock:

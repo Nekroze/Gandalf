@@ -42,6 +42,11 @@ var OverrideHTTPS bool
 // cli switch or `GANDALF_MMOCK_CHAOS` environment variable.
 var OverrideChaos bool
 
+// ExportOnly when set to true will only run contract exporters when asserting contracts.
+// also override this wth the `-gandalf-export-only` cli switch or
+// `GANDALF_EXPORT_ONLY` environment variable.
+var ExportOnly bool
+
 // MockSkip when set to true will not write mock definitions to disk. You can
 // also override this wth the `-gandalf-mmock-skip` cli switch or
 // `GANDALF_MMOCK_SKIP` environment variable.
@@ -66,6 +71,8 @@ func init() {
 		"Force enable chaos testing in all output mmock definitions.")
 	flag.BoolVar(&OverrideHTTPS, "gandalf-provider-https", false,
 		"Force all requests to use HTTPS.")
+	flag.BoolVar(&ExportOnly, "gandalf-export-only", false,
+		"Only run contract exports, skipping all calls and checks.")
 	flag.BoolVar(&MockSkip, "gandalf-mmock-skip", false,
 		"Skip exporting contract definitions to mmock.")
 	flag.BoolVar(&OverrideColour, "gandalf-colour", false,

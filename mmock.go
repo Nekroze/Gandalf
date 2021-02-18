@@ -112,6 +112,7 @@ func (m *ToMMock) saveMockToFile(mock mock.Definition) error {
 	if err != nil {
 		return err
 	}
+	out = mmockFixTimespansForParsing(out)
 	err = ioutil.WriteFile(path.Join(MockSavePath, mock.Description+".json"), out, 0644)
 	if err != nil {
 		return err
@@ -121,26 +122,13 @@ func (m *ToMMock) saveMockToFile(mock mock.Definition) error {
 	return err
 }
 
-func (m *ToMMock) saveMockToAPI(mock mock.Definition) error {
-	api := getMMockClient()
-	if e := api.upsertDefinition(mock); e != nil {
-		return e
-	}
-	m.saved = true
-	return nil
-}
-
 // Save a valid MMock definition to a json file with the contract name as the filename.
 // This incurs disk IO so is restricted to only saving once per instance.
 func (m *ToMMock) Save(c *Contract) error {
 	if m.saved || c.Tested || MockSkip {
 		return nil
 	}
-	saver := m.saveMockToFile
-	if mockSaveAPI() {
-		saver = m.saveMockToAPI
-	}
-	return saver(m.contractToMock(c))
+	return m.saveMockToFile(m.contractToMock(c))
 }
 
 func mmockFixTimespansForParsing(in []byte) []byte {

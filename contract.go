@@ -57,13 +57,15 @@ func (c *Contract) export(t Testable) {
 // for pre and post exporters.
 func (c *Contract) Assert(t Testable) {
 	t.Helper()
-	defer func() { c.Run++ }()
-	defer c.export(t)
 	c.export(t)
 
-	resp, err := c.Request.Call(c.Run)
-	c.honorCheck(t, err)
-	c.honorCheck(t, c.Check.Assert(resp))
+	if !ExportOnly {
+		defer c.export(t)
+		defer func() { c.Run++ }()
+		resp, err := c.Request.Call(c.Run)
+		c.honorCheck(t, err)
+		c.honorCheck(t, c.Check.Assert(resp))
+	}
 	c.Tested = true
 }
 

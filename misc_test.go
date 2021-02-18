@@ -39,7 +39,7 @@ func TestToMultiple(t *testing.T) {
 		Export:  ExportToMultiple(ex1, ex2),
 	}
 	c.Assert(t)
-	if len(ex1.seen)+len(ex2.seen) != 2 {
+	if len(ex1.seen)+len(ex2.seen) < 2 {
 		t.Fatalf("Not all exporters were hit by ToMultiple:\n1: %#v\n2: %#v", ex1, ex2)
 	}
 }

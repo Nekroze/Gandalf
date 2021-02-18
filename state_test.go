@@ -45,11 +45,15 @@ func TestState(t *testing.T) {
 	s.KV["ABC"] = 42
 	s.KV["AEG"] = 43
 	s.KV["BCD"] = 4242
-	GetState().ClearRegex("A.*")
+	if e := GetState().ClearRegex("A.*"); e != nil {
+		t.Fatalf("State clearing threw an unexpected error")
+	}
 	if _, ok := GetState().KV["BCD"]; !ok {
 		t.Fatalf("Key was wiped that did not match regex")
 	}
-	GetState().ClearKey("BCD")
+	if e := GetState().ClearRegex("BCD"); e != nil {
+		t.Fatalf("State clearing threw an unexpected error")
+	}
 	if _, ok := GetState().KV["BCD"]; ok {
 		t.Fatalf("Single Key was not wiped")
 	}
